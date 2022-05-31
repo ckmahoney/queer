@@ -103,10 +103,17 @@ seq =
   ]
 
 
+katies =   
+  stack
+    [ sound "katy-perry" # orbit 12 # room 0.3 # size 0.4  
+    , sound "katy-perry" # octersubsub 1 # hpf (rangex 40 160 $ slow 8 tri)  # hpq 0.3  # lpf 320 # amp 0.1
+    , sound "katy-perry" # delay 0.3 # delayt (cps/4) # delayfb 0.3 # hpf (rangex 1280 4800 $ slow 4 tri)  # hpq 0.3  # amp 0.1    
+    ] # nudge ((intro/2) - 0.32)
+
+
 do
   resetCycles
-  once $ sound "katy-perry"  # nudge ((intro/2) - 0.32) #  orbit 12 # room 0.3 # size 0.4  
+  once $ katies
   d1 $ seqPLoop seq
-
 
 panic
