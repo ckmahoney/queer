@@ -1,0 +1,31 @@
+-- Boys Noize
+-- Girl Crush
+
+cps=93/60
+
+setcps cps
+
+d1 $ sound "bd"
+
+
+d2 $ slow 4
+  $ struct "t@4 t@2 t t t t@3 t@4" $ sound "bd"
+  # distort 3
+  # speed (0.5 + (4 * ((slow 2 square) * (slow 8 tri)) ))
+
+
+d6 $ slow 2 $ struct "f t"
+   $ stack
+    [ sound "hh" # amp 2
+    , sound "sn:3" # amp 0.2
+    ]
+   # orbit 6 # room 0.3  
+
+
+d7 $ note "g"
+  # sound "superzow"
+  # detune (rangex 0.1 10 $ slow 24 saw)
+  # sus "0.05 0.1 0.2 0.5"
+  # orbit 7 # room 0.1
+  # delay 0.3 # delayt (cps/4) # delayfb 0.5
+  

@@ -1,0 +1,96 @@
+-- Dorian Electra
+-- My Agenda 
+
+
+cps=(137/60)
+
+
+setcps cps
+
+
+pVerse="gs'min ~ ds'min ~ e'maj ~ g'maj'i ~"
+chorus="gs'm ds'maj e'maj ds'maj gs'min ds'maj e'maj ds'maj gs'min"
+
+
+mainKick=
+  slow 4
+  $ struct "t@3 t f@4" $ note "0 0 ~"
+  # sound "future:3"
+  # distort 0.1
+
+
+
+
+breakKick=
+  slow 2
+  $ struct "t@3 t@3 t@2" $ note "0"
+  # sound "future:5"
+  -- # distort 0.820
+
+
+
+snare=
+  slow 4
+  $ note "~ 0"
+  # sound "sn:2"
+  # distort 0.6
+  # amp 0.25
+  # orbit 3 # room 0.3 # size 0.8
+
+  
+
+chords= slow 16
+   $ ply 4 $ struct "t f t f t f t f" $ note verse
+   # sound "superzow" # detune 0.1
+   # lpf (rangex 800 3000 $ (fast 8 sine) + (slow 4 saw)) # lpq 1.5
+   # distort 2
+   # amp 0.3
+   |- note "<12 24>"
+   # orbit 7  # room 0.1 # size (rangex 0.1 0.8 $ slow 64 saw)
+
+d1 $ sound "hh:1"
+
+once $ sound "katy-perry" # orbit 12
+
+
+
+panic
+
+do
+  resetCycles
+  d1 $ seqPLoop
+    [ (0, 32, stack [mainKick, snare, chords])
+    , (32, 64, stack [breakKick])
+    , (48, 64, sound "hh!4")
+    ]
+
+
+--pussy riot lyrics (during breakdown)
+
+Москва — столица гейропы
+Стали квирами все гомофобы
+Духовные скрепы сменили на стропы
+Мы радужным мобом по Красной топаем
+Гей-пропаганда
+Мы любим тебя от Чечни до Уганды
+С тобой мы танцуем на Красной
+У нас очень много секса, но он безопасный
+Гей-пропаганда
+We make love from Chеchnya to Uganda
+Гей-пропаганда
+We make love from Chechnya to Uganda
+
+--pussy riot translation
+
+Moscow is the capital of geyropa
+All homophobes have become queer
+Spiritual braces changed to slings
+We are a rainbow mob on Red stomp
+Gay propaganda
+We love you from Chechnya to Uganda
+With you we dance on Red
+We have a lot of sex, but it's safe
+Gay propaganda
+We make love from Chechnya to Uganda
+Gay propaganda
+We make love from Chechnya to Uganda

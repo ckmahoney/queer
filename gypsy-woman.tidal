@@ -1,0 +1,28 @@
+setcps 2
+
+d1 $ note "0"
+  # sound "future:5"
+  # speed 0.8
+  # distort 0.1
+  # hpf (rangex 1000 10 $ sine)
+
+
+d3 $ (sound $ stack ["~ hh27", "hh27:8!4"])
+  # amp (rangex 0.1 1 $ slow 32 saw)
+  # distort (rangex 0.2 0.8 rand)
+  # orbit 3 # room 0.2
+
+
+d7 $ slow (4 * 8) -- (timeSig * numBars)
+  $ struct "[t@4 t@3 t@3 t@3 t@3 t@4 t@3 t@3 t@3 t@3]!4"
+  $ seqPLoop
+     [ (0, 2, note "[a'm7 a'm7 as'maj7!3  e'm7 e'm7 ds'maj7 ds6'maj7 ds7'maj7]@2")
+     , (2, 8, note "d'm9 d'm9 d'm7!3 d'm9 d'm9 d'm7!3 a'm7 a'm7 as'maj7!3 g'm7 g'm7 c'add9'!3 \
+                 \  d'm9 d'm9 d'm7!3 d'm9 d'm9 d'm7!3 a'm7 a'm7 as'maj7!3 e6'm7 e6'm7'i ds6'maj7!3" |- note 12)
+    ]
+  # sound "superhammond"
+  # sus 0.1 + (rand/8)
+  # amp (rangex 0.1 0.4 sine)
+  # lpf (1000 * (rangex 1 8 $ slow 16 sine)) # lpq 0.7
+  # orbit 7
+  # room 0.1

@@ -1,0 +1,81 @@
+setcps 1.95
+
+-- intro
+
+do
+  hush
+  resetCycles
+  d1 $ slow 4
+    $ slow 4
+    $ note "2'min 7'maj 9'min 0'maj"
+    # sound "superpiano"
+  d9 $ sound "bd"
+
+
+-- interlude
+
+do
+  resetCycles
+  hush
+  d1 $ slow 8
+    $ cat
+      [ note "-3 . -3 . 4 4 . 5 4 . ~ -3 . -3  ~ . 4 4 . 5 4"
+      , note "-3 . -3 . 4 4 . 5 4 . ~ 0 . 0  -3 . 0 -3 . 0 _ "
+      ]
+    # sound "superpiano"
+    # room 0.1
+
+
+-- $ cat  
+--   [ note "-3'min _ _ _ _ _ _ _  0'maj _ _ _ 5'maj _ _ _ "
+--   , note "-3'min _ _ _ _ _ _ _  0'maj _ _ _ 7'maj _ _ _ "
+--   , note "9'min'i _ _ _ _ _ _ _ _ _ _ _ _ _ _ _"
+--   , note "0'maj'i _ _ _ _ _ _ _ _ _ _ _ _ _ _ _"
+--   ]     
+
+
+-- verse
+
+do
+  hush
+  resetCycles
+  d3
+    $ slow 4
+    $ cat
+      [ note "5'maj!4"
+      , note "7'maj!4"
+      , note "-3'min'i!4"
+      , note "0'maj!4"
+      , note "5'maj!4"
+      , note "7'maj!4"
+      , note "4'min'o!4"
+      , note "9'min'o!4"
+      ] - note 12 # sound "superpiano" # lpf 800
+  d4
+    $ slow 16
+    $ cat [ note "~ 9 9 9 9 _ 9 9 9 7 7 7 _ _ 2 2 4 _ 4 4 7 _ 4 2 0 _ _ _ _ _ _ _"
+      , note "~ 9 9 9 9 _ 9 9 9 7 7 7 _ _ 2 2 4 _ 4 4 8 _ 4 2 0 _ _ _ _ _ _ _"
+      ]
+    # sound "superpiano"  # hpf 900
+  d9 $ sound "bd"
+
+
+-- chorus
+do
+  hush
+  resetCycles
+  d1
+    $ slow 16
+    $ note "9 9 9 9 _ 9 9 9 7 7 2 _ _ 2 2 4 _ 4 4 4 7 _ 4 _ 2 0 _ _ _ _ _ _ "
+    -- $ note "0 2 4 0 5 _ _ 4 5 _ 4 -1 _ _ _ 4 _ 4 4 4 _ 2 2 _ _ _ _ _ _ _ _ _ _"
+    # sound "superpiano"
+
+hush
+
+
+do
+  hush
+  resetCycles
+
+
+hush
