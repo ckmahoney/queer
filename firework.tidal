@@ -1,28 +1,27 @@
-let panic = do hush
-               once $ s "superpanic"
+killall =
+  do
+    hush
+    once $ s "superpanic"
 
 cps=(124/60)
 
 setcps cps
 
-
+-- define the chord progressions for each arc of the song
 progVerse = "gs'maj fs'maj f'min cs'sus2"
 progChorus1 = "gs'5 as'5 f'5 cs'5"
 progChorus2 = pChorus1
-
-chordsChorus =
-  slow (4 * 4)
-  $ note verse
-  # sound "superpiano"
 
 
 -- cycles in each phrase
 -- cpc * cellsInSection * repeats
 
+
 rV=4
 rC1=2
 rC2=4
 rB=2
+
 
 cpc=4
 intro=cpc*4
@@ -32,10 +31,10 @@ chorus2=cpc*4*rC2
 bridge=cpc*4*rB
 outro=cpc*4*2
 
-sizes=[intro, verse, chorus1, chorus2, verse, chorus1, chorus2, bridge, chorus2, outro]
-totalCycles=foldl (+)  0 sizes
 
-kickV=0
+places=[intro, verse, chorus1, chorus2, verse, chorus1, chorus2, bridge, chorus2, outro]
+totalCycles=foldl (+) 0 places
+sizes=foldl (\all next -> all ++ [ (last all) + next ]) [0] places
 
 
 stackIntro =
@@ -74,28 +73,40 @@ stackChorus2 =
     ]
 
 
+stackBridge =
+  stack
+    [ sound "hh!4"
+    ]
+
+
+stackOutro =
+  stack
+    [ sound "bd!2"
+    ]
+
+
 riff =
   slow 2 $ note "cs6 c6 as5 gs5" # sound "<superzow, superpiano, superhammond>" # amp 0.2 # sus 0.4
 
 
-d1 $ stackChorus1
+seq =  
+  [ (sizes!!0, sizes!!1, stackIntro)
+  , (sizes!!1, sizes!!2, stackVerse)
+  , (sizes!!2, sizes!!3, stackChorus1)
+  , (sizes!!3, sizes!!4, stackChorus2)    
+  , (sizes!!4, sizes!!5, stackVerse)
+  , (sizes!!5, sizes!!6, stackChorus1)
+  , (sizes!!6, sizes!!7, stackChorus2)
+  , (sizes!!7, sizes!!8, stackBridge)
+  , (sizes!!8, sizes!!9, stackChorus2)
+  , (sizes!!9, sizes!!10, stackOutro)
+  ]
 
-
-seq =
-  seqPLoop
-    [ (0, intro, stackIntro
-    , (intro, verse, stackVerse)
-    , (verse, chorus1, stackChorus1)
-    , (chorus1, chorus2, stackChorus2)
-    ]
-
-
-d1 $ slow intro  $ ply 4  $ stack [ note verse # sound "superpiano", sound "hh27!4"]
-
-d1 $ slow (verse/rV)  $ stack [ note chorus  # sound "[supersquare,supersaw,superfm]", sound "bd!4"]
 
 do
-  -- once $ sound "katy-perry"
   resetCycles
-  d1 $ 
+  once $ sound "katy-perry"  # nudge ((intro/2) - 0.32) #  orbit 12 # room 0.3 # size 0.4  
+  d1 $ seqPLoop seq
+
+
 panic
