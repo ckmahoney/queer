@@ -1,0 +1,101 @@
+let panic = do hush
+               once $ s "superpanic"
+
+cps=(124/60)
+
+setcps cps
+
+
+progVerse = "gs'maj fs'maj f'min cs'sus2"
+progChorus1 = "gs'5 as'5 f'5 cs'5"
+progChorus2 = pChorus1
+
+chordsChorus =
+  slow (4 * 4)
+  $ note verse
+  # sound "superpiano"
+
+
+-- cycles in each phrase
+-- cpc * cellsInSection * repeats
+
+rV=4
+rC1=2
+rC2=4
+rB=2
+
+cpc=4
+intro=cpc*4
+verse=cpc*4*rV
+chorus1=cpc*4*rC1
+chorus2=cpc*4*rC2
+bridge=cpc*4*rB
+outro=cpc*4*2
+
+sizes=[intro, verse, chorus1, chorus2, verse, chorus1, chorus2, bridge, chorus2, outro]
+totalCycles=foldl (+)  0 sizes
+
+kickV=0
+
+
+stackIntro =
+  stack
+    [ slow intro  $ ply 4  $ note progVerse # sound "superpiano" 
+    , midinote "~ 56" #  sound "soshats" 
+    ]
+    
+
+stackVerse =
+  stack 
+    [ slow 2 $ midinote "32" #  sound "soskick" 
+    , slow 4 $ struct "t@3 t@2 t@3" $ sound "[bd:3,future:3]" # speed 0.8
+    , slow 2 $ sound "~ [sn:1, cp:3]"# distort 0.05 # speed 0.9
+    , slow intro  $ ply 4  $ note progVerse # sound "superpiano" 
+    ]
+
+
+stackChorus1 =
+  stack
+    [ sound "{hh:27, ~ hh27:3, ~ hh27:1}" 
+    , slow (chorus1 / rC1) $ note "c6 as c6 as cs6 c6 cs6 c6 as gs as gs as gs as gs"
+        |- (note 12) # sound "<superpwm superzow>" # orbit 7 # room 0.8 # size 0.1 #  amp 0.1 # sus (rangex 0.05 0.6 $ slow (chorus1/rC1/2) tri)
+    , slow intro  $ ply 4  $ note progChorus1 # sound "superpiano" 
+    ]
+
+
+stackChorus2 =
+  stack
+    [ midinote "32" #  sound "soskick" # distort 0.51 # sus 0.2
+    , sound "{hh:27, ~ hh27:3, ~ hh27:1}" # amp 0.2
+    , midinote "51" #  sound "soskick" # pitch1 106 # pitch2 0.8 # speed 0.3 # voice (range 100 200 $ slow (chorus1 /8) tri) # amp 0.3
+    , slow (chorus1 / rC1) $ note "c6 as c6 as cs6 c6 cs6 c6 as gs as gs as gs as gs"
+        |- note "<<-12 -24>, <~ <-12, 0>>, 12>" #  sound "<superzow, superpwm>"  # orbit 7 # room 0.3 # size 0.8 # amp 0.1 # ply 4 (sus "0.1 0.3")
+    , slow intro  $ ply 4  $ note progChorus2 # sound "superpiano"
+    ]
+
+
+riff =
+  slow 2 $ note "cs6 c6 as5 gs5" # sound "<superzow, superpiano, superhammond>" # amp 0.2 # sus 0.4
+
+
+d1 $ stackChorus1
+
+
+seq =
+  seqPLoop
+    [ (0, intro, stackIntro
+    , (intro, verse, stackVerse)
+    , (verse, chorus1, stackChorus1)
+    , (chorus1, chorus2, stackChorus2)
+    ]
+
+
+d1 $ slow intro  $ ply 4  $ stack [ note verse # sound "superpiano", sound "hh27!4"]
+
+d1 $ slow (verse/rV)  $ stack [ note chorus  # sound "[supersquare,supersaw,superfm]", sound "bd!4"]
+
+do
+  -- once $ sound "katy-perry"
+  resetCycles
+  d1 $ 
+panic
