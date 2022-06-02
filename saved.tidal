@@ -1,2 +1,33 @@
 -- Naltroc
 -- Saved
+
+
+let
+  cps = (128/60)
+  prog = "f4'maj7 f4'maj7 c4'maj7 c4'maj7 c4'6 a4'min7 e4'min7'i [<b3,fs4,a4,e6> <b3,e4,fs4,e6>]"
+  syn = sound "superfm"
+    # fmmod 2 1 (range 8 64 $ slow 8 saw) # fmratio 2 "3 6 9 12"
+    # fmratio 3 3 # fmmod 3 2 32 # fmmod 3 1 8 
+    # att (cps/4) # hold (rangex 1 0.25 (rev tri))
+    # hpf (rangex 2800 10 $ slow 1 tri) # hpq 0.3    
+    # lpf ((rangex 400 800 (slow 8 sine))) # lpq 0.2
+    |- hpf (2000 * (slow 16 $ square *  tri)) -- square mod so this is on alternate phrases
+    |+ lpf (10000 * (slow 32 $ square * (rev tri)))
+    # orbit 7 # room 0.05 # size 0.9
+  kick = sound "soskick" # freq 40 # amp 1
+  hat1 = note "0" # sound "superhat" # accelerate (rangex 0.5 3 $ slow 15 sine)
+  hat2 = note "~ 0" # sound "soshats" # freq 4880
+           # pitch1 (480 + (320 * (slow 4 $ (saw - (saw/2)))))
+           # sustain (rangex 0.1 0.8 $ slow 8 tri)
+in
+ do
+  d1 $ slow 4
+   $ stack 
+    [ fast 4 kick
+    , ghost $ fast 8 $ hat1
+    , brak $ fast 2 $ hat2 # orbit 6 # room 0.3 # size (rangex 0.4 0.8 $ slow 10 sine)
+    , fast 2 $ note "~ 0" # sound "superclap" # rate 0.3 # pitch1 0.8 # distort 0.2
+        # orbit 4 # room 0.2 # size 0.3
+    ]
+
+
