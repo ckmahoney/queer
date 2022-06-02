@@ -21,7 +21,8 @@ let
            # sustain (rangex 0.1 0.8 $ slow 8 tri)
 in
  do
-  d1 $ slow 4
+  d1 $ slow 8 $ note prog # syn
+  d2 $ slow 1
    $ stack 
     [ fast 4 kick
     , ghost $ fast 8 $ hat1
