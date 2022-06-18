@@ -1,2 +1,17 @@
 -- Sam Smith
 -- Stay With Me (instrumental)
+
+cps = (84/60)
+
+setcps cps
+
+let
+  prog = slow 8 $ (note "a'min7'ii@4 f'maj'i@3 <c'maj'ii c'maj'o>@9" - (note 12))
+in
+  d1 $ prog # sound "superpiano"
+    # lpf (rangex 6400 800 $ slow 32 tri)
+    # orbit 1 # room 0.3 # size (rangex 0.1 0.9 $ slow 64 tri)
+
+d2 $ note "0" # sound "future" # amp 0.1
+
+d3 $ slow 2 $ note "~ 0" # sound "sn:1"
