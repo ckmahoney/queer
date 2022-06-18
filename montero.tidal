@@ -1,8 +1,9 @@
 -- Lil Nas X
 -- Montero
 
+cps = (179/60)
 
-setcps (179/60)
+setcps (cps * 1)
 
 let
   cps=(179/60)
@@ -45,10 +46,10 @@ let
   bigchords =
     slow (verse1/rV)
     $ note progChorus
-    # sound "superpiano"
-    |- note "<24, 0, -12>" # amp 0.1
-    |- note "<36,24, 12 0, -12, -24, -36>" # amp 0.05
-    # orbit 7 # room 0.8
+    # sound "superpiano" # amp 0.1
+    -- |- note "<24, 0, -12>" # amp 0.1
+    -- |- note "<36,24, 12 0, -12, -24, -36>" # amp 0.025
+    # orbit 7 # room 0.8 
   chords1 = 
     slow (verse1/rV)
     $ note (progVerse)
@@ -71,13 +72,16 @@ let
 in
   d1 $ stack
     [ ""
-    , kick1 # amp 2
+    , sometimes (fast 4) $ sometimes brak $  kick1 # amp 4
     , pluck # amp 0.5
-    -- , ghost $ clap
+    , clap
+    -- , chords1
     -- , chords2  +| note (arp "up" "0'5'2") |- (note 12)
-      -- # hpf (rangex 200 3000 $ slow 32 sine)
+      # hpf (rangex 200 3000 $ slow 32 sine)
+    , bigchords
     ]
 
 once $ sound "lil-nas-x"
+
 
 killall

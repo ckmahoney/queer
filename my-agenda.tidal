@@ -41,11 +41,11 @@ let
     # sound "hh27:8"
   stackMain =
     [ ""
-    , mainKick
+    -- , mainKick
     , breakKick
-    , snare
+    -- , snare
     , chords -- |+ note 12  +| note (arp "up down" "0'5'8")
-    , hat1 # sound "hh27:8" # amp (1 + (rand * 2))
+    -- , hat1 # sound "hh27:8" # amp (1 + (rand * 2))
     , hat2 # amp 1.2 -- +| (fast 8 $ note (arp "up down" "0'maj13'4")) # sus 0.05
     ] 
   stackBreak =
@@ -64,33 +64,3 @@ killall
 
 once $ sound "dorian-electra" # amp 2
 
-
---pussy riot lyrics (during breakdown)
-
-Москва — столица гейропы
-Стали квирами все гомофобы
-Духовные скрепы сменили на стропы
-Мы радужным мобом по Красной топаем
-Гей-пропаганда
-Мы любим тебя от Чечни до Уганды
-С тобой мы танцуем на Красной
-У нас очень много секса, но он безопасный
-Гей-пропаганда
-We make love from Chеchnya to Uganda
-Гей-пропаганда
-We make love from Chechnya to Uganda
-
---pussy riot translation
-
-Moscow is the capital of Geyropa
-All homophobes have become queer
-Spiritual braces changed to slings
-We are a rainbow mob on Red stomp
-Gay propaganda
-We love you from Chechnya to Uganda
-With you we dance on Red
-We have a lot of sex, but it's safe
-Gay propaganda
-We make love from Chechnya to Uganda
-Gay propaganda
-We make love from Chechnya to Uganda

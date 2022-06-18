@@ -6,22 +6,24 @@ cps=(126/60)
 setcps cps
 
 let
-  cps=(126/60)
-  prog = slow 32 $ note  "f4'maj7 f4'maj7 c4'maj7 c4'maj7 c4'6 a4'min7 e4'min7'i [<b3,fs4,a4,e6> <b3,e4,fs4,e6>]"
-  fm = sound "superfm"
+  prog =
+    slow 32 $ note  "f4'maj7 f4'maj7 c4'maj7 c4'maj7 c4'6 a4'min7 e4'min7'i [<b3,fs4,a4,e6> <b3,e4,fs4,e6>]"
+  fm =
+    sound "superfm"
     # fmmod 2 1 (range 8 64 $ slow 8 saw) # fmratio 2 "3 6 9 12"
     # fmratio 3 3 # fmmod 3 2 32 # fmmod 3 1 8 
     # att (cps/4) # hold (rangex 1 0.25 (rev tri))
-    # hpf (rangex 2800 10 $ slow 1 tri) # hpq 0.3    
+    # hpf (rangex 2800 10 $ slow 1 tri) # hpq 0.1    
     # lpf ((rangex 400 800 (slow 8 sine))) # lpq 0.1
     |- hpf (2000 * (slow 16 $ square *  tri)) -- square mod so this is on alternate phrases
     |+ lpf (10000 * (slow 32 $ square * (rev tri)))
-    # orbit 7 # room 0.05 # size 0.9
+    # orbit 7 # room 0.05 # size 0.9 # amp 0.1
   fat = sound "<<superfm, <supersaw>>, superhammond  <supersaw, supersquare>>"
     # sus (rangex 0.1 0.55 $ slow 16 (rev tri))
-    # lpf (rangex 300 1200 $ slow 32 (rev tri)) # lpq 0.1
-    # orbit 6 # delayt (cps/"4 8") # delay 0.4 # delayfb 0.65    
-  kick1 = sound "soskick" # freq 40
+    # lpf (rangex 300 8000 $ slow 32 (rev tri)) # lpq 0.1
+    # orbit 6 # delayt (cps/3) # delay 0.4 # delayfb 0.65 # amp 0.1
+  kick1 =
+    sound "soskick" # freq 40
   kick2 =
     sound "future:3"
   clap =
@@ -29,11 +31,14 @@ let
     $ note "~ 0" # sus 0.2
     # sound "<cp:0,<cp:2, sn:2>,cp:3>" # rate 0.3 # pitch1 0.8 # distort 0.2  # amp 0.7
     -- # orbit 4 # room 0.2 # size 0.3
-  hat1 = note "~ [0!2]" # sound "superhat" # accelerate (rangex 0.5 3 $ slow 15 sine)
+  hat1 =
+    note "~ [0!2]" # sound "superhat" # accelerate (rangex 0.5 3 $ slow 15 sine)
     # amp (rangex 0.3 0.22 $ slow 3 rand)
-  hat2 = note "~ 0" # sound "soshats" # freq 4880
+  hat2 =
+    note "~ 0" # sound "soshats" # freq 4880
     # pitch1 (480 + (320 * (slow 4 $ (saw - (saw/2)))))
     # sustain (rangex 0.1 0.8 $ slow 8 tri)
+    # amp 0.2
   hat3 =
     rarely (fast "1 1 1 2") 
     $ stack 
@@ -45,41 +50,39 @@ let
   bass = 
    slow 8    
     $ struct "f@4 f@2 t@1 t@2 t@2 t@4 t f@4 f@2 t@1 t@3 t@3 t@3"
-      (note "~ ~ b3 d4 e4 e4 e3 ~ ~ e4 d4 a3 <<b3 c3> a3>") # sound "supertron"
-      |- note "<0, 12>"
-      |+ note "<0>"
-      # hpf 80 # hpq 0.4
-      # lpf (rangex 800 8000 $ fast 32 saw) # lpq (rand/2)
-      # attack 0.025 # sus 0.1 # release 0.25
+      (note "~ ~ b3 d4 e4 e4 e3 ~ ~ e4 d4 a3 <<b3 c3> a3>") # sound "<supertron,supersquare>"
+      # hpf 80 # hpq 0.2
+      # lpf (rangex 800 8000 $ fast 32 saw) # lpq (rand/3)
+      # attack 0.0125 # sus (rangex 0.1 1 $ slow 32 tri) # release (rangex 0.1 0.45 $ slow 8 tri) # amp 0.05
 in
- d1
-  $ stack 
-    [ ""
-    , bass |- note 12 # amp 0.5
-    , kick1 # freq 163 -- # sus 0.5 # vowel "i o a e u"
-      |* speed "<1,0.5,0.25>"
-    -- , fast 4 kick1 # amp 0.3 # hpf 38 # hpq 0.45
-      -- |* speed "<1,0.5,0.25>"
-    -- , kick2 # amp 3 # speed "<1,0.66,1.25,8,32>" # sus 0.4 # lpf 40 # lpq 0.25
-      -- |* speed "<1,0.5,0.25>"
-      -- # distort 0.02
-    -- , prog |+ (note "<-12,24>") # stack [fm, fat]
-       -- # hpf (rangex 300 40 $ slow 4 tri) # lpf (rangex 1200 10000 $ slow 8 (sine * tri))
-    , clap
-    -- , hat1
-    -- , hat2
-    -- , hat3
-    -- , (sometimes brak) $ slow 2 $ hat1 # orbit 6 # room 0.3 # size (rangex 0.4 0.8 $ slow 10 sine)
-    ] |* speed (1/8) --  # lpf (rangex 1000 100 $ slow 8 tri) # lpq 0.1
+ d1 $ stack 
+  [ ""
+  -- , bass |- note 12 # amp 0.2
+  -- , prog # fm
+  -- , kick1 # freq 81.5 # sus 0.5 -- # vowel "i o a e u"
+    -- |* speed "<1,0.5,0.25>" # amp 0.3
+  -- , fast 4 kick1 # amp 0.3 # hpf 38 # hpq 0.45
+    -- |* speed "<1,0.5,0.25>"
+  -- , kick2 # amp 3 # speed "<1,0.66,1.25,8,32>" # sus 0.4 # lpf 40 # lpq 0.25
+    -- |* speed "<1,0.5,0.25>"
+    -- # distort 0.02
+  , prog |+ (note "<-12,24>") # fat
+     -- # hpf (rangex 300 40 $ slow 4 tri) # lpf (rangex 1200 10000 $ slow 8 (sine * tri))
+     -- +| note (arp "up down" "0'5'4")
+     -- # sus (rangex 0.05 0.2 $ slow 8 (sine + rand))
+     -- |+ note "<19,31>"
+  -- , clap # orbit 3 # delay 0.15 # delayt (cps/10) #delayfb 0.4
+  -- , hat1
+  -- , hat2
+  -- , hat3
+  , (sometimes brak) $ slow 2 $ hat1 # orbit 6 # room 0.3 # size (rangex 0.4 0.8 $ slow 10 sine)
+  ] |* speed (1) -- # lpf (rangex 1000 100 $ slow 8 tri) # lpq 0.1
 
-d1 $ stack
-  [ sound "bd"
-  , slow 8
-  , prog # fm
-  $ struct "f@4 f@2 t@1 t@2 t@2 t@4 t f@4 f@2 t@1 t@3 t@3 t@3"
-    (note "~ ~ ds4 f4 f4 f3 as3 ~ ~ ds4 cs4 gs3 as3") # sound "supertron"
-    -- |- note "<24, 12>"
-    # attack 0.025 # sus 0.1 # release 0.25
-  ]
 
 killall
+
+
+
+d2 $ slow 32
+  $ struct "f@3 t t t t@2 f@3 t t t t@2 f@2 t@2 t@2 t@2 t@2 t@2 t t t t f@3 t t t t@2 f@3 t t t t@2 f@2 t@6 f@2 t@6" (note "~ b4 d e e ~ b4 d e e ~ fs fs fs fs fs fs d e b4 ~ b4 d e e ~ b4 d e e ~ a ~ b")
+  # sound "superpiano"

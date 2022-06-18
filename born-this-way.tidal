@@ -1,16 +1,18 @@
 -- Laday Gaga
 -- Born This Way
 
+cps = (124/60)
+
+setcps (cps)
+
 let
-  cpc = 4
-  cps = (124/60)
   cellsIntro = 4 * cpc
   cellsVerse = 4 * 4 * cpc
   cellsChorus = 4 * 4 * cpc
   cellsBreak1 = 4 * 1 * cpc
   cellsBreak2 = 4 * 2 * cpc
   places = [cellsIntro, cellsVerse, cellsChorus, cellsBreak1, cellsVerse, cellsChorus, cellsBreak1, cellsBreak2, cellsChorus]
-  beats = 96 * 4
+  beats = 96 * cpc
   duration = beats / cps
   sizes = getSizes places  
 
@@ -19,8 +21,6 @@ let
   rC1 = 2  
   rC2 = 2
   progVerse = "fs'maj e'maj [b'maj b'sus4] [b'maj7 cs'min] fs'maj e'maj [b'maj b'sus2] [b'maj7 cs'min7] fs'maj e'maj b'maj b'5 fs'maj e'maj b'maj b'5"
-  progChorus1 = "fs'maj e'maj b'maj fs'maj"
-  progChorus2 = "fs'maj e'maj b'maj fs'maj"
   bridge = "fs'maj"
 
 let
@@ -96,5 +96,46 @@ in
 killall
 
 
+My mama told me when I was young
+"We are all born superstars"
+She rolled my hair and put my lipstick on
+In the glass of her boudoir
+"There's nothing wrong with loving who you are"
+She said, "'Cause He made you perfect, babe"
+"So hold your head up, girl, and you'll go far
+Listen to me when I say"
 
-sizes
+[Chorus]
+I'm beautiful in my way
+'Cause God makes no mistakes
+I'm on the right track, baby
+I was born this way
+Don't hide yourself in regret
+Just love yourself, and you're set
+I'm on the right track, baby
+I was born this way (Born this way)
+
+[Post-Chorus]
+Ooh, there ain't no other way
+Baby, I was born this way
+Baby, I was born this way (Born this way)
+Ooh, there ain't no other way
+Baby, I was born this way
+Right track, baby
+I was born this way
+
+[Interlude]
+Don't be a drag, just be a queen
+Don't be a drag, just be a queen
+Don't be a drag, just be a queen
+Don't be (Don't be, don't be)
+
+[Verse 2]
+Give yourself prudence and love your friends
+Subway kid, rejoice your truth
+In the religion of the insecure
+I must be myself, respect my youth
+A different lover is not a sin
+Believe capital H-I-M, hey, hey, hey
+I love my life, I love this record and
+Mi amore vole fe yah (Same DNA)

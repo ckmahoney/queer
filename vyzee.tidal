@@ -25,22 +25,22 @@ let
     |- note "<12,24>"
     # sus 0.15
   stab =
-    prog # sound "supergong"
+    prog # stack [ sound "supergong", sound "superfm", sound "supersquare" ] # amp 0.1 
     |+ note "<0,12,24>"
-    # lpf 1500 # hpf 50 # hpq 0.35
+    # lpf 800 # hpf 50 # hpq 0.35
   chords =
     let pat = note "cs5'min'ii <e6, gs6>" in
     slow 2 
-    $ struct "t@4 t@4 t@4 t@3 t@4 t@2 t@3 t@4 t@4" pat
-      # attack (rangex 0.05 0.3 $ slow 16 tri)
-    -- $ slow 2 $ pat
+    -- $ struct "t@4 t@4 t@4 t@3 t@4 t@2 t@3 t@4 t@4" pat
+      -- # attack (rangex 0.05 0.15 $ slow 16 tri)
+    $ slow 2 $ pat
     # sound "<supertron, superzow>" # amp 0.1
   zip1 =
     slow "6!5 3!3"
     $ struct "t@4 t@4 t@3 t@3 t@3 t@3 t@4 t@4 t@4 t@4" (note "cs")
     # sound "superhoover" # accelerate 1
     # hpf (rangex 200 3000 $ slow 8 rand) # hpq (rand/3) # pan (rand - (rand/2))
-  zip2 =
+  zip2 = degrade $ degrade $ 
     (fast "2 8 <6 7> <16 12>" $ freq "200(<1!5 3!3 1!4 2!4>,4)") # sound "superchip"
     |+ freq (1000 * "0 <1,2,3,4,5,6,7,8>")
     |* freq (rangex 0.2 5.0 $ slow 16 tri)
@@ -49,7 +49,7 @@ let
   hats1 =
     ply div
     $ note "0" # sound "hh27:8"
-    # sus (((slow 32 saw) / 2) + (rand / 2))
+    # sus (((slow 32 saw) / 2) + rand)
   hats2 =
     fast 2
     $ note "~ 1" # sound "<cp, hh27:4>" # sus 0.05
@@ -58,18 +58,24 @@ in
 d1 $ slow 4
   $ stack
   [ ""
-  -- , clock
+  , clock
   , kick1
-  , stab
-  -- , chords # room 0
-  -- , hats1
-  -- , hats2 # pan (slow 15 (sine/2))
-  -- , kick2
+  -- , stab
+  -- , chords
+  , hats1
+  , hats2 -- # pan (slow 15 (sine/2))
+  , kick2
   -- , zip1
-  -- , zip2
+  , zip2
   ]
-  
-    
-once $ sound "sophie" # amp 2
 
-killall
+
+sophies =   
+  stack
+    [ sound "sophie" # orbit 12 # room 0.3 # size 0.4  
+    , sound "sophie" # octersubsub 1 # hpf (rangex 40 160 $ slow 8 tri)  # hpq 0.3  # lpf 320 # amp 0.1
+    , sound "sophie" # hpf (rangex 1280 4800 $ slow 4 tri)  # hpq 0.3  # amp 0.1    
+    ]  
+
+once $ sophies
+

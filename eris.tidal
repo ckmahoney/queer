@@ -1,0 +1,29 @@
+cps = (120/60)
+
+setcps(cps*0.71)
+
+
+d1
+ $ fast 2 
+ $ note "0" # sound "future:2"
+ # sus 0.05
+ # hpf 160 # hpq 0.3 
+  
+d2 $ slow 2
+  $ sound "~ sn:10" # amp 2 # sus 0.1
+  -- # orbit 2 # size 0.3 # room 0.3
+
+
+d4 $ fast 2
+  $ note "0!4" # sound "hh:2"
+  # orbit 4 # room 0.3 # size 0.3
+  # amp 0.41
+  # hpf (range 3000 1000 $ slow 8 saw)
+  # pan (rand - (rand/2))
+  
+
+d5 $ degrade 
+  $ note (arp "up" "a2'min9'4 d'min9'4")
+  # sound "supertron"
+  # lpf (rangex 5000 100 $ slow 8 sine) # lpq 0.4
+  # amp 0.1

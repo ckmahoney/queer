@@ -1,131 +1,86 @@
-killall =
-  do
-    hush
-    once $ s "superpanic"
-
-
 cps=(124/60)
 
-setcps cps
+setcps (cps)
 
--- define the chord progressions for each arc of the song
-progVerse = "gs'maj fs'maj f'min cs'sus2"
-progChorus1 = "gs'5 as'5 f'5 cs'5"
-progChorus2 = progChorus1
-
-
--- cycles in each phrase
--- cpc * cellsInSection * repeats
-
-
-rV=4
-rC1=2
-rC2=4
-rB=2
-
-
-cpc=4
-intro=cpc*4
-verse=cpc*4*rV
-chorus1=cpc*4*rC1
-chorus2=cpc*4*rC2
-bridge=cpc*4*rB
-outro=cpc*4*2
-
-
-places=[intro, verse, chorus1, chorus2, verse, chorus1, chorus2, bridge, chorus2, outro]
-totalCycles=foldl (+) 0 places
-
-sizes = getSizes places
-
-
-
-stackIntro =
-  stack
-    [ slow intro  $ ply 4  $ note progVerse # sound "superpiano" 
-    , midinote "~ 56" #  sound "soshats" 
+let
+  progVerse = "gs'maj fs'maj f'min cs'sus2"
+  progChorus1 = "gs'5 as'5 f'5 cs'5"
+  progChorus2 = progChorus1
+  rV=4
+  rC1=2
+  rC2=4
+  rB=2
+  cpc=4
+  intro=cpc*4
+  verse=cpc*4*rV
+  chorus1=cpc*4*rC1
+  chorus2=cpc*4*rC2
+  bridge=cpc*4*rB
+  outro=cpc*4*2
+  places=[intro, verse, chorus1, chorus2, verse, chorus1, chorus2, bridge, chorus2, outro]
+  totalCycles=foldl (+) 0 places
+  sizes = getSizes places
+  stackIntro =
+    stack
+      [ slow intro  $ ply 4  $ note progVerse # sound "superpiano" 
+      , midinote "~ 56" #  sound "soshats" 
+      ]
+  stackVerse =
+    stack 
+      [ slow 2 $ midinote "32" #  sound "soskick" 
+      , slow 4 $ struct "t@3 t@2 t@3" $ sound "[bd:3,future:3]" # speed 0.8
+      , slow 2 $ sound "~ [sn:1, cp:3]"# distort 0.05 # speed 0.9
+      , slow intro  $ ply 4  $ note progVerse # sound "superpiano" 
+      ]
+  stackChorus1 =
+    stack
+      [ sound "{hh:27, ~ hh27:3, ~ hh27:1}" 
+      , slow (chorus1 / rC1) $ note "c6 as c6 as cs6 c6 cs6 c6 as gs as gs as gs as gs"
+          |- (note 12) # sound "<superpwm superzow>" # orbit 7 # room 0.8 # size 0.1 #  amp 0.1 # sus (rangex 0.05 0.6 $ slow (chorus1/rC1/2) tri)
+      , slow intro  $ ply 4  $ note progChorus1 # sound "superpiano" 
+      ]
+  stackChorus2 =
+    stack
+      [ midinote "32" #  sound "soskick" # distort 0.51 # sus 0.2
+      , sound "{hh:27, ~ hh27:3, ~ hh27:1}" # amp 0.2
+      , midinote "51" #  sound "soskick" # pitch1 106 # pitch2 0.8 # speed 0.3 # voice (range 100 200 $ slow (chorus1 /8) tri) # amp 0.3
+      , slow (chorus1 / rC1) $ note "c6 as c6 as cs6 c6 cs6 c6 as gs as gs as gs as gs"
+          |- note "<<-12 -24>, <~ <-12, 0>>, 12>" #  sound "<superzow, superpwm>"  # orbit 7 # room 0.3 # size 0.8 # amp 0.1 # ply 4 (sus "0.1 0.3")
+      , slow intro  $ ply 4  $ note progChorus2 # sound "superpiano"
+      ]
+  stackBridge =
+    stack
+      [ sound "hh!4"
+      ]
+  stackOutro =
+    stack
+      [ sound "bd!2"
+      ]
+  riff =
+    slow 2 $ note "cs6 c6 as5 gs5" # sound "<superzow, superpiano, superhammond>" # amp 0.2 # sus 0.4
+  seq =  
+    [ (sizes!!0, sizes!!1, stackIntro)
+    , (sizes!!1, sizes!!2, stackVerse)
+    , (sizes!!2, sizes!!3, stackChorus1)
+    , (sizes!!3, sizes!!4, stackChorus2)    
+    , (sizes!!4, sizes!!5, stackVerse)
+    , (sizes!!5, sizes!!6, stackChorus1)
+    , (sizes!!6, sizes!!7, stackChorus2)
+    , (sizes!!7, sizes!!8, stackBridge)
+    , (sizes!!8, sizes!!9, stackChorus2)
+    , (sizes!!9, sizes!!10, stackOutro)
     ]
-
-
-d4 $ sound "hh!4" # amp 1 # silence
-
-d5 $ sound "bd!2" # amp 1 # speed (rangex 0.3 0.9 $ slow 8 saw) # hpf (rangex 30 300 $ slow 8 saw) # hpq 2 # silence
-
-stackVerse =
-  stack 
-    [ slow 2 $ midinote "32" #  sound "soskick" 
-    , slow 4 $ struct "t@3 t@2 t@3" $ sound "[bd:3,future:3]" # speed 0.8
-    , slow 2 $ sound "~ [sn:1, cp:3]"# distort 0.05 # speed 0.9
-    , slow intro  $ ply 4  $ note progVerse # sound "superpiano" 
-    ]
-
-
-stackChorus1 =
-  stack
-    [ sound "{hh:27, ~ hh27:3, ~ hh27:1}" 
-    , slow (chorus1 / rC1) $ note "c6 as c6 as cs6 c6 cs6 c6 as gs as gs as gs as gs"
-        |- (note 12) # sound "<superpwm superzow>" # orbit 7 # room 0.8 # size 0.1 #  amp 0.1 # sus (rangex 0.05 0.6 $ slow (chorus1/rC1/2) tri)
-    , slow intro  $ ply 4  $ note progChorus1 # sound "superpiano" 
-    ]
-
-
-stackChorus2 =
-  stack
-    [ midinote "32" #  sound "soskick" # distort 0.51 # sus 0.2
-    , sound "{hh:27, ~ hh27:3, ~ hh27:1}" # amp 0.2
-    , midinote "51" #  sound "soskick" # pitch1 106 # pitch2 0.8 # speed 0.3 # voice (range 100 200 $ slow (chorus1 /8) tri) # amp 0.3
-    , slow (chorus1 / rC1) $ note "c6 as c6 as cs6 c6 cs6 c6 as gs as gs as gs as gs"
-        |- note "<<-12 -24>, <~ <-12, 0>>, 12>" #  sound "<superzow, superpwm>"  # orbit 7 # room 0.3 # size 0.8 # amp 0.1 # ply 4 (sus "0.1 0.3")
-    , slow intro  $ ply 4  $ note progChorus2 # sound "superpiano"
-    ]
-
-
-stackBridge =
-  stack
-    [ sound "hh!4"
-    ]
-
-
-stackOutro =
-  stack
-    [ sound "bd!2"
-    ]
-
-
-riff =
-  slow 2 $ note "cs6 c6 as5 gs5" # sound "<superzow, superpiano, superhammond>" # amp 0.2 # sus 0.4
-
-
-seq =  
-  [ (sizes!!0, sizes!!1, stackIntro)
-  , (sizes!!1, sizes!!2, stackVerse)
-  , (sizes!!2, sizes!!3, stackChorus1)
-  , (sizes!!3, sizes!!4, stackChorus2)    
-  , (sizes!!4, sizes!!5, stackVerse)
-  , (sizes!!5, sizes!!6, stackChorus1)
-  , (sizes!!6, sizes!!7, stackChorus2)
-  , (sizes!!7, sizes!!8, stackBridge)
-  , (sizes!!8, sizes!!9, stackChorus2)
-  , (sizes!!9, sizes!!10, stackOutro)
-  ]
-
-
-katies =   
-  stack
-    [ sound "katy-perry" # orbit 12 # room 0.3 # size 0.4  
-    , sound "katy-perry" # octersubsub 1 # hpf (rangex 40 160 $ slow 8 tri)  # hpq 0.3  # lpf 320 # amp 0.1
-    , sound "katy-perry" # delay 0.3 # delayt (cps/4) # delayfb 0.3 # hpf (rangex 1280 4800 $ slow 4 tri)  # hpq 0.3  # amp 0.1    
-    ] # nudge ((intro/2) - 0.32)
-
-
-seq
-
-do
+  katies =   
+    stack
+      [ sound "katy-perry" # orbit 12 # room 0.3 # size 0.4  
+      , sound "katy-perry" # octersubsub 1 # hpf (rangex 40 160 $ slow 8 tri)  # hpq 0.3  # lpf 320 # amp 0.1
+      , sound "katy-perry" # delay 0.3 # delayt (cps/4) # delayfb 0.3 # hpf (rangex 1280 4800 $ slow 4 tri)  # hpq 0.3  # amp 0.1    
+      ] # nudge ((intro/2) - 0.32)
+in
+ do
   resetCycles
   once $ katies
   d1 $ seqPLoop seq
 
 
-
-
-killall
+once $ katies

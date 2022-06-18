@@ -43,11 +43,14 @@ let
 in
 d1 $ stack
   [ ""
-  -- , clock
-  , kick1
-  -- , kick2 
-  -- , snare
-  -- , synth
+  , clock
+  -- , kick1
+  , kick2 
+  , snare
+  -- , off (cps/4) (|+ note 7)
+    -- $ off (cps/8) (|+ note 12)
+    -- $ ply 4 
+  , synth # sus 0.031
   , hat1
   -- , hat2
   ] 
