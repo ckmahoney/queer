@@ -1,64 +1,83 @@
-cps=(183/60)
+-- Lil Nas X
+-- Montero
 
 
 setcps (179/60)
 
-progVerse = "ds'maj e'maj e'maj ds'maj"
-progChorus = "ds'maj gs'min e'maj7 ds'dom7"
-
-cpc = 4
-rV = 2
-verse1 = cpc*4 * rV
-chorus1 = cpc*8
-chorus2 = cpc*8
-bridge = cpc*8
-verse2 = cpc*16
-
-
--- nice patch for an FM synth
-megafm =
-  # fmamp 1 0  
-  # fmratio 0 2
-  # fmmod 2 1 (range 4 32 $ slow 32 sine)
-  # fmamp 2 0.25
-  # fmmod 1 1 8
-  # fmamp 3 1
-  # fmmod 3 2 0.25  
-  # fmmod 1 3 0.5
-  # fmratio 4 0.5 # fmratio 5 0.25
-
-
-d1 $ slow 2 $ stack
-  [ sound "bd:2"
-  , midinote 29 # sound "soskick" 
-  ] # distort (rangex 0.01 0.2 rand)
-
-
-d1 $ slow (verse1/rV) $ note progChorus  # sound "superpiano" |- note "<36,24, 12 0, -12, -24, -36>"
-  # room 0.8 # amp 0.1
-
-
-d1 $ slow (verse1/rV) $ note (progChorus) # sound "superhammond"
-   # voice "<1, 2, 6, 9>"
-   # hpf (1000 + (2000 * (fast (rV/verse1 *64) sine))) # hpq 0.5
-
-
-d2 $ slow 4 $ struct "t@2 t t f t t@2" (note "ds ds g ~ ds g")
-  |+ (slow 4 $ note "0 1 1 0") |- note 12
-  # stack [ sound "supervibe", "superfm" # megafm ]
-
-
-d3 $ slow 4
-  $ struct "f@3 t@3 t@2" $ sound "cp"
-  # bpf (rangex 2600 3200 rand) # bpq 2
-  # orbit 3 # room 0.1
-  # delay 0.2 # delayt (cps/"<8 32>") # delayfb (range 0.1 0.8 $ slow 16 tri)
-
-
-d7 $ slow (4 * 4)
-  $ struct "t t t t" $ note progChorus
-  # sound "<supermandolin superpiano >"
-  # orbit 7 # delay 0.3 # delayt (cps/8) # delayfb 0.3
-
+let
+  cps=(179/60)
+  progVerse = "ds'maj e'maj e'maj ds'maj"
+  progChorus = "ds'maj gs'min e'maj7 ds'dom7"
+  cpc = 4
+  rV = 2
+  verse1 = cpc*4 * rV
+  chorus1 = cpc*8
+  chorus2 = cpc*8
+  bridge = cpc*8
+  verse2 = cpc*16
+  clap =
+    slow 4
+    $ struct "f@3 t@3 t@2" $ sound "cp"
+    # bpf (rangex 2600 3200 rand) # bpq 2
+    # orbit 3 # room 0.1
+    # delay 0.2 # delayt (cps/"<8 32>") # delayfb (range 0.1 0.8 $ slow 16 tri)
+  kick1 =
+    slow 2
+    $ stack
+      [ sound ""
+      , sound "bd:2"
+      , midinote 29 # sound "soskick" 
+      ] # distort (rangex 0.01 0.2 rand) 
+  kick2 =
+    slow 1 $
+    sound "future:8" # speed 0.95
+  megafm =
+    sound "superfm"
+    # fmamp 1 0  
+    # fmratio 0 2
+    # fmmod 2 1 (range 4 32 $ slow 32 sine)
+    # fmamp 2 0.25
+    # fmmod 1 1 8
+    # fmamp 3 1
+    # fmmod 3 2 0.25  
+    # fmmod 1 3 0.5
+    # fmratio 4 0.5 # fmratio 5 0.25
+  bigchords =
+    slow (verse1/rV)
+    $ note progChorus
+    # sound "superpiano"
+    |- note "<24, 0, -12>" # amp 0.1
+    |- note "<36,24, 12 0, -12, -24, -36>" # amp 0.05
+    # orbit 7 # room 0.8
+  chords1 = 
+    slow (verse1/rV)
+    $ note (progVerse)
+    # sound "superhammond"
+      # voice "<1, 2, 6, 9>" # sus (rand * 0.5)
+      # orbit 7 # delay 0.3 # delayt (cps/"<3 2>") # delayfb 0.7
+    # hpf (1000 + (2000 * (fast (rV/verse1 *64) sine))) # hpq 0.5
+  chords2 =
+    slow (4 * 4)
+    $ ply 4 $  struct "t" $ note progChorus
+    # sound "<superhoover, <supersaw,supersquare> <superzow,superpiano>>"
+    # attack (cps/64) # release cps
+    -- |+ note (arp "spiralup spiraldown" "-12'8'4") -- |+ note (slow 64 "0 5 2 9")
+    -- # sus 0.05 # bpf (rangex 1000 100 $ slow 32 tri) # bpq 1.8
+    # orbit 7 # delay 0.3 # delayt (cps/8) # delayfb 0.3 # amp 0.075
+  pluck =
+    slow 4 $ struct "t@2 t t f t t@2" (note "ds ds g ~ ds g")
+    |+ (slow 4 $ note "0 1 1 0") |- note 12
+    # stack [ sound "supervibe",  megafm ] # amp 0.2
+in
+  d1 $ stack
+    [ ""
+    , kick1 # amp 2
+    , pluck # amp 0.5
+    -- , ghost $ clap
+    -- , chords2  +| note (arp "up" "0'5'2") |- (note 12)
+      -- # hpf (rangex 200 3000 $ slow 32 sine)
+    ]
 
 once $ sound "lil-nas-x"
+
+killall

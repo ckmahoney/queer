@@ -3,6 +3,7 @@ killall =
     hush
     once $ s "superpanic"
 
+
 cps=(124/60)
 
 setcps cps
@@ -10,7 +11,7 @@ setcps cps
 -- define the chord progressions for each arc of the song
 progVerse = "gs'maj fs'maj f'min cs'sus2"
 progChorus1 = "gs'5 as'5 f'5 cs'5"
-progChorus2 = pChorus1
+progChorus2 = progChorus1
 
 
 -- cycles in each phrase
@@ -34,7 +35,9 @@ outro=cpc*4*2
 
 places=[intro, verse, chorus1, chorus2, verse, chorus1, chorus2, bridge, chorus2, outro]
 totalCycles=foldl (+) 0 places
-sizes=foldl (\all next -> all ++ [ (last all) + next ]) [0] places
+
+sizes = getSizes places
+
 
 
 stackIntro =
@@ -42,7 +45,11 @@ stackIntro =
     [ slow intro  $ ply 4  $ note progVerse # sound "superpiano" 
     , midinote "~ 56" #  sound "soshats" 
     ]
-    
+
+
+d4 $ sound "hh!4" # amp 1 # silence
+
+d5 $ sound "bd!2" # amp 1 # speed (rangex 0.3 0.9 $ slow 8 saw) # hpf (rangex 30 300 $ slow 8 saw) # hpq 2 # silence
 
 stackVerse =
   stack 
@@ -111,9 +118,14 @@ katies =
     ] # nudge ((intro/2) - 0.32)
 
 
+seq
+
 do
   resetCycles
   once $ katies
   d1 $ seqPLoop seq
 
-panic
+
+
+
+killall
