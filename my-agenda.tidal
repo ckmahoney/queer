@@ -30,9 +30,9 @@ let
      # sound "superzow" # detune 0.1
      # lpf (rangex 800 3000 $ (fast 8 sine) + (slow 4 saw)) # lpq 1.5
      # distort 2
-     # amp 0.2
+     # amp 0.075
      |- note "<12 24>"
-     # orbit 7  # room 0.1 # size (rangex 0.1 0.8 $ slow 64 saw)
+     # orbit 7  # room 0.1 # size (rangex 0.1 0.8 $ slow 64 saw) 
   hat1 =
     note "0"
     # sound "hh27:9"
@@ -41,12 +41,12 @@ let
     # sound "hh27:8"
   stackMain =
     [ ""
-    -- , mainKick
+    , mainKick
     , breakKick
-    -- , snare
+    , snare
     , chords -- |+ note 12  +| note (arp "up down" "0'5'8")
-    -- , hat1 # sound "hh27:8" # amp (1 + (rand * 2))
-    , hat2 # amp 1.2 -- +| (fast 8 $ note (arp "up down" "0'maj13'4")) # sus 0.05
+    , hat1 # sound "hh27:8" # amp (1 + (rand * 2))
+    -- , hat2 # amp 1.2 -- +| (fast 8 $ note (arp "up down" "0'maj13'4")) # sus 0.05
     ] 
   stackBreak =
     [ ""
@@ -62,5 +62,11 @@ in
 
 killall
 
-once $ sound "dorian-electra" # amp 2
+dorians =   
+  stack
+    [ sound "dorian-electra" # orbit 12 # room 0.3 # size 0.4  
+    , sound "dorian-electra" # octersubsub 1 # hpf (rangex 40 160 $ slow 8 tri)  # hpq 0.3  # lpf 320 # amp 0.1
+    , sound "dorian-electra" # delay 0.3 # delayt (cps/4) # delayfb 0.3 # hpf (rangex 1280 4800 $ slow 4 tri)  # hpq 0.3  # amp 0.1    
+    ] # amp 1
 
+once $ dorians

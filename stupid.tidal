@@ -44,12 +44,11 @@ in
    # lpf 1000
 
 
-
 ashnikkos =
   stack
     [ sound "ashnikko" # orbit 12 # room 0.3 # size 0.4  
     , sound "ashnikko" # octersubsub 1 # hpf (rangex 40 160 $ slow 8 tri)  # hpq 0.3  # lpf 320 # amp 0.1
     , sound "ashnikko" # hpf (rangex 1280 4800 $ slow 4 tri)  # hpq 0.3  # amp 0.1    
-    ]  
+    ] # amp 3
 
-
+once ashnikkos

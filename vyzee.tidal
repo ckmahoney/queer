@@ -75,7 +75,8 @@ sophies =
     [ sound "sophie" # orbit 12 # room 0.3 # size 0.4  
     , sound "sophie" # octersubsub 1 # hpf (rangex 40 160 $ slow 8 tri)  # hpq 0.3  # lpf 320 # amp 0.1
     , sound "sophie" # hpf (rangex 1280 4800 $ slow 4 tri)  # hpq 0.3  # amp 0.1    
-    ]  
+    ] # amp 2.5
 
 once $ sophies
 
+killall

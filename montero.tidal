@@ -81,7 +81,8 @@ in
     , bigchords
     ]
 
-once $ sound "lil-nas-x"
+
+once $ sound "lil-nas-x" # amp 3
 
 
 killall
