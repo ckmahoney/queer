@@ -26,22 +26,22 @@ let
     # sound "supergong" # sus 0.8 # room 0.8 # size 0.21 # orbit 4
   hat1 =
     ply (2 * div* (slow 4 "1 1 1 <3 <2 6>>")) $ note "0"
-    # sound "hh27"
+    # sound "hh27" # amp 0.5
   hat2 =
    struct "[f f t f f f f f]!4" (note "0")
     # sound "hh27:7"
-    # orbit 6 # room 0.6
+    # orbit 6 # room 0.6 # amp 0.5
 in
   d1 $ slow 16 $ stack
     [ ""
     , clock
-    , bass # fmratio 1 3 # fmmod 1 1 9 # distort 0.2 # silence
-    , kick # distort 0.2
-    , snare # sus (rand / 2) # distort 0.3
+    , bass # fmratio 1 3 # fmmod 1 1 9 # distort 0.2
+    -- , kick # distort 0.2
+    -- , snare # sus (rand / 2) # distort 0.3
     , stack [ hat1 # distort 0.1 # amp 0.1
-    , hat2 # distort 0.1 ] # amp 2
-    ]
-   # lpf 1000
+    , hat1
+    , hat2 # distort 0.1  # amp 2
+    ] # amp 2
 
 
 ashnikkos =

@@ -9,10 +9,11 @@ setcps 2
 let
   kick =
     note "0"
-    # sound "future:5"
-    # speed 0.8
+    # sound "future"
+    # speed 0.3
     # distort 0.1
-    # hpf (rangex 1000 10 $ sine)
+    # amp 0.8
+    -- # hpf (rangex 1000 10 $ sine)
   hats =
     (sound $ stack ["~ hh27", "hh27:8!4"])
     # amp (rangex 0.1 1 $ slow 32 saw)
@@ -26,10 +27,9 @@ let
        , (2, 8, note "d'm9 d'm9 d'm7!3 d'm9 d'm9 d'm7!3 a'm7 a'm7 as'maj7!3 g'm7 g'm7 c'add9'!3 \
                    \  d'm9 d'm9 d'm7!3 d'm9 d'm9 d'm7!3 a'm7 a'm7 as'maj7!3 e6'm7 e6'm7'i ds6'maj7!3" |- note 12)
       ]
-    # sound "superhammond"
     # sus 0.1 + (rand/8)
     # amp (rangex 0.2 0.4 sine)
-    # lpf (1000 * (rangex 1 8 $ slow 16 sine)) # lpq 0.4
+    # hpf (1000 * (rangex 1 8 $ slow 16 sine)) # lpq 0.4
     # orbit 7
     # room 0.1
 in
@@ -37,17 +37,28 @@ in
     [ ""
     , kick
     , hats
-    , organ # hpf 100
-    ]
+    -- , organ # hpf 200
+    -- , organ |+ note (arp "up" "0'5'8")
+    ] 
+
 
 killall
 
 
-d2 $ fast (slow 4 "1 <2,4>")
-  $ randslice 128 $ sound "crystal-waters"
+d2
+  $ randslice 32 $ sound "crystal-waters"
   # sus 0.25
-  -- |+ note (slow 32 "0 7 2 9")
   # att 0.1
   # orbit 2 # delayt (cps/4) # delay 0.5
-  # hpf 1000
+  # amp 0.6
 
+
+d5 $ note "~ 0" # sound "hh" # amp 2
+  # orbit 5 # room 0.3 # size 0.8
+
+d7 $ brak $ stack [
+  sound "hh" # amp 1
+  , note "0(3,8) 0(5,8) 0(11,16)" # sound "hh"
+  ]
+
+d7 $ brak $ sound "hh" # amp 1

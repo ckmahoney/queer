@@ -5,6 +5,11 @@ cps = (124/60)
 
 setcps (cps)
 
+d3 $ slow 4 $ stack
+  [ note "0!4" # sound "future" # speed 0.8
+  , slow 2 $ note "0 ~" # sound "hh27"
+  ]
+
 let
   cellsIntro = 4 * cpc
   cellsVerse = 4 * 4 * cpc
@@ -88,5 +93,8 @@ in
   once $ gagas
   d1 $ seqPLoop seq
 
+d3 $ slow "4" $ note "0!4" # sound "bd:2" # amp 0.8 # speed 0.45
+
+d4 $ note "
 
 killall

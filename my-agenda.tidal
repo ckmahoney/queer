@@ -12,7 +12,7 @@ let
     slow 4
     $ struct "t@3 t f@4" $ note "0 0 ~"
     # sound "future:3"
-    # distort 0.1 # amp 1
+    # distort 0.1 # amp 1 # speed 0.4
   breakKick=
     slow 2
     $ struct "t@3 t@3 t@2" $ note "0"
@@ -46,7 +46,7 @@ let
     , snare
     , chords -- |+ note 12  +| note (arp "up down" "0'5'8")
     , hat1 # sound "hh27:8" # amp (1 + (rand * 2))
-    -- , hat2 # amp 1.2 -- +| (fast 8 $ note (arp "up down" "0'maj13'4")) # sus 0.05
+    , hat2 # amp 1.2 -- +| (fast 8 $ note (arp "up down" "0'maj13'4")) # sus 0.05
     ] 
   stackBreak =
     [ ""
@@ -70,3 +70,5 @@ dorians =
     ] # amp 1
 
 once $ dorians
+
+d4 $ sound "~ hh!2" # amp 0.8

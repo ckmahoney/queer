@@ -57,8 +57,8 @@ let
 in
  d1 $ stack 
   [ ""
-  , bass |- note 12 # amp 0.2
-  , prog # fm
+  -- , bass |- note 12 # amp 0.2
+  -- , prog # fm
   , kick1 # freq 81.5 # sus 0.5 -- # vowel "i o a e u"
     -- |* speed "<1,0.5,0.25>" # amp 0.3
   -- , fast 4 kick1 # amp 0.3 # hpf 38 # hpq 0.45
@@ -66,13 +66,12 @@ in
   -- , kick2 # amp 3 # speed "<1,0.66,1.25,8,32>" # sus 0.4 # lpf 40 # lpq 0.25
     -- |* speed "<1,0.5,0.25>"
     -- # distort 0.02
-  , prog |+ (note "<-12,24>") # fat
+  -- , prog |+ (note "<-12,24>") # fat
+     -- |+ note "<12,24>"
      -- # hpf (rangex 300 40 $ slow 4 tri) # lpf (rangex 1200 10000 $ slow 8 (sine * tri))
-     -- +| note (arp "up down" "0'5'4")
-     -- # sus (rangex 0.05 0.2 $ slow 8 (sine + rand))
-     -- |+ note "<19,31>"
-  -- , clap # orbit 3 # delay 0.15 # delayt (cps/10) #delayfb 0.4
-  , hat1
+     -- +| note (arp "up down" "0'5'4") # sus 0.05 # amp 0.005
+  -- , clap # orbit 3 # delay 0.15 # delayt (cps/10) #delayfb 0.4 # hpf 1800
+  -- , hat1
   , hat2
   , hat3
   , (sometimes brak) $ slow 2 $ hat1 # orbit 6 # room 0.3 # size (rangex 0.4 0.8 $ slow 10 sine)

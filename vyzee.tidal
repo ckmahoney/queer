@@ -31,9 +31,9 @@ let
   chords =
     let pat = note "cs5'min'ii <e6, gs6>" in
     slow 2 
-    -- $ struct "t@4 t@4 t@4 t@3 t@4 t@2 t@3 t@4 t@4" pat
-      -- # attack (rangex 0.05 0.15 $ slow 16 tri)
-    $ slow 2 $ pat
+    $ struct "t@4 t@4 t@4 t@3 t@4 t@2 t@3 t@4 t@4" pat
+      # attack (rangex 0.05 0.15 $ slow 16 tri)
+    -- $ slow 2 $ pat
     # sound "<supertron, superzow>" # amp 0.1
   zip1 =
     slow "6!5 3!3"
@@ -58,16 +58,16 @@ in
 d1 $ slow 4
   $ stack
   [ ""
-  , clock
-  , kick1
-  -- , stab
-  -- , chords
+  -- , clock
+  -- , kick1
+  -- , stab # amp 0.015
+  , chords |- note 0 # amp 0.02- +| note (arp "up" "0'5'4") # sus 0.1
   , hats1
   , hats2 -- # pan (slow 15 (sine/2))
   , kick2
   -- , zip1
-  , zip2
-  ]
+  -- , degrade $ slow 4 $ zip2 |+ note 12 # amp 0.1
+  ] 
 
 
 sophies =   

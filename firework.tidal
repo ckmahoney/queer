@@ -47,7 +47,7 @@ let
       , slow (chorus1 / rC1) $ note "c6 as c6 as cs6 c6 cs6 c6 as gs as gs as gs as gs"
           |- note "<<-12 -24>, <~ <-12, 0>>, 12>" #  sound "<superzow, superpwm>"  # orbit 7 # room 0.3 # size 0.8 # amp 0.1 # ply 4 (sus "0.1 0.3")
       , slow intro  $ ply 4  $ note progChorus2 # sound "superpiano"
-      ]
+      ] 
   stackBridge =
     stack
       [ sound "hh!4"
@@ -81,6 +81,9 @@ in
   resetCycles
   once $ katies
   d1 $ seqPLoop seq
+
+
+d4 $ slow 1 $ sound "future" # speed 0.8 # hpf 50 # hpq 0.3
 
 
 once $ katies

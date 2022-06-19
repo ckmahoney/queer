@@ -41,19 +41,19 @@ let
     # sound "hh27:8"
     # amp 2
 in
-d1 $ stack
+d2 $ stack
   [ ""
-  , clock
-  -- , kick1
+  -- , clock
+  , kick1 # speed 0.5
   , kick2 
   , snare
-  -- , off (cps/4) (|+ note 7)
-    -- $ off (cps/8) (|+ note 12)
-    -- $ ply 4 
-  , synth # sus 0.031
-  , hat1
+  , off (cps/4) (|+ note 7)
+    $ off (cps/8) (|+ note 12)
+    $ ply (slow 8 "1 4 2 4") 
+    synth # sus 0.011 # hpf 2000
+  -- , hat1
   -- , hat2
-  ] 
+  ]  # lpf 200
 
 
 once $ sound "boys-noize" # amp 2
